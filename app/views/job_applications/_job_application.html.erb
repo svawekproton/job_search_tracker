@@ -1,37 +1,28 @@
-<div id="<%= dom_id job_application %>">
-  <div>
-    <strong>Company name:</strong>
-    <%= job_application.company_name %>
+<div class="card border-0 shadow-sm mb-3 card-hover" style="border-left: 5px solid <%= status_border_color(job_application.status) %> !important;">
+  <div class="card-body p-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h5 class="fw-bold mb-1"><%= job_application.company_name %></h5>
+        <h6 class="text-primary mb-2"><%= job_application.position %></h6>
+        <div class="text-muted small">
+          <i class="bi bi-geo-alt me-1"></i><%= job_application.location %>
+          <span class="mx-2">•</span>
+          <i class="bi bi-clock-history me-1"></i>Applied <%= job_application.applied_at.present? ? "#{time_ago_in_words(job_application.applied_at)} ago" : "N/A" %>
+        </div>
+      </div>
+      <div class="text-end">
+        <span class="badge <%= status_badge_classes(job_application.status) %> mb-3 d-block">
+          <%= job_application.status.humanize %>
+        </span>
+        <div class="btn-group btn-group-sm">
+          <%= link_to job_application, class: "btn btn-outline-secondary" do %>
+            <i class="bi bi-eye"></i>
+          <% end %>
+          <%= link_to edit_job_application_path(job_application), class: "btn btn-outline-secondary" do %>
+            <i class="bi bi-pencil"></i>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div>
-    <strong>Position:</strong>
-    <%= job_application.position %>
-  </div>
-
-  <div>
-    <strong>Status:</strong>
-    <%= job_application.status %>
-  </div>
-
-  <div>
-    <strong>Applied at:</strong>
-    <%= job_application.applied_at %>
-  </div>
-
-  <div>
-    <strong>Url:</strong>
-    <%= job_application.url %>
-  </div>
-
-  <div>
-    <strong>Location:</strong>
-    <%= job_application.location %>
-  </div>
-
-  <div>
-    <strong>Description:</strong>
-    <%= job_application.description %>
-  </div>
-
 </div>

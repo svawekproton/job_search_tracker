@@ -1,2 +1,14 @@
-<%= turbo_stream.prepend "notes", partial: "notes/note", locals: { note: @note } %>
+<%= turbo_stream.prepend "activity-timeline" do %>
+  <div class="timeline-item">
+    <%= render "notes/note", note: @note %>
+  </div>
+<% end %>
+
 <%= turbo_stream.replace "new_note", partial: "notes/form", locals: { job_application: @job_application, note: Note.new } %>
+
+<% # We also need to update the Notes tab and Interview Prep tab if applicable %>
+<%= turbo_stream.prepend "all-notes", partial: "notes/note", locals: { note: @note } %>
+
+<% if ["Question", "Answer"].include?(@note.category) %>
+  <%= turbo_stream.prepend "interview-prep-notes", partial: "notes/note", locals: { note: @note } %>
+<% end %>

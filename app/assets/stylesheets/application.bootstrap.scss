@@ -1,2 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+// Custom Variables
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$body-bg: #F8F9FA;
+
+// Status Colors
+:root {
+  --status-applied-bg: #CFE2FF;
+  --status-applied-text: #084298;
+  --status-interviewing-bg: #FFF3CD;
+  --status-interviewing-text: #856404;
+  --status-offered-bg: #D1E7DD;
+  --status-offered-text: #0F5132;
+  --status-rejected-bg: #F8D7DA;
+  --status-rejected-text: #842029;
+  --status-withdrawn-bg: #E2E3E5;
+  --status-withdrawn-text: #41464B;
+}
+
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+// Custom status classes
+.bg-applied { background-color: var(--status-applied-bg) !important; }
+.text-applied-text { color: var(--status-applied-text) !important; }
+.bg-interviewing { background-color: var(--status-interviewing-bg) !important; }
+.text-interviewing-text { color: var(--status-interviewing-text) !important; }
+.bg-offered { background-color: var(--status-offered-bg) !important; }
+.text-offered-text { color: var(--status-offered-text) !important; }
+.bg-rejected { background-color: var(--status-rejected-bg) !important; }
+.text-rejected-text { color: var(--status-rejected-text) !important; }
+.bg-withdrawn { background-color: var(--status-withdrawn-bg) !important; }
+.text-withdrawn-text { color: var(--status-withdrawn-text) !important; }
+
+.card-hover {
+  transition: transform 0.2s, box-shadow 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+  }
+}
+
+.timeline {
+  border-left: 2px solid #DEE2E6;
+  padding-left: 20px;
+  position: relative;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+  &:before {
+    content: '';
+    position: absolute;
+    left: -27px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #0D6EFD;
+    border: 2px solid #fff;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

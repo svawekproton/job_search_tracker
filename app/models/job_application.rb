@@ -1,6 +1,7 @@
 class JobApplication < ApplicationRecord
   has_one_attached :cv
   has_one_attached :cover_letter
+  has_rich_text :description
   has_many :notes, dependent: :destroy
   has_many :events, dependent: :destroy
 
@@ -12,5 +13,11 @@ class JobApplication < ApplicationRecord
     withdrawn: 4
   }, default: :applied
 
-  validates :company_name, :position, :status, presence: true
+  validates :company_name, :position, :status, :applied_at, presence: true
+
+  scope :search, ->(query) {
+    if query.present?
+      where("company_name LIKE ? OR position LIKE ? OR location LIKE ?", "%#{query}%", "%#{query}%", "%#{query}%")
+    end
+  }
 end

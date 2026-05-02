@@ -5,9 +5,15 @@ RSpec.describe JobApplication, type: :model do
     job_application = JobApplication.new(
       company_name: "Google",
       position: "Software Engineer",
-      status: :applied
+      status: :applied,
+      applied_at: Date.today
     )
     expect(job_application).to be_valid
+  end
+
+  it "is invalid without an applied_at date" do
+    job_application = JobApplication.new(applied_at: nil)
+    expect(job_application).not_to be_valid
   end
 
   it "is invalid without a company_name" do

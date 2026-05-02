@@ -1,60 +1,152 @@
-<p style="color: green"><%= notice %></p>
-
-<div class="row mt-4">
-  <div class="col-md-8">
-    <div class="card mb-4">
-      <div class="card-body">
-        <%= render @job_application %>
+<div class="row">
+  <!-- Left Sidebar (33%) -->
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm mb-4" data-status-updater-target="card" style="border-left: 5px solid <%= status_border_color(@job_application.status) %> !important;">
+      <div class="card-body p-4">
+        <h3 class="fw-bold mb-1"><%= @job_application.company_name %></h3>
+        <h5 class="text-primary mb-4"><%= @job_application.position %></h5>
         
-        <div class="mt-3">
-          <% if @job_application.cv.attached? %>
-            <%= link_to "Download CV", url_for(@job_application.cv), class: "btn btn-outline-primary btn-sm" %>
-          <% end %>
-          <% if @job_application.cover_letter.attached? %>
-            <%= link_to "Download Cover Letter", url_for(@job_application.cover_letter), class: "btn btn-outline-primary btn-sm" %>
+        <div class="mb-4" data-controller="status-updater">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <label class="text-muted small text-uppercase fw-bold mb-0">Current Status</label>
+            <span class="badge <%= status_badge_classes(@job_application.status) %> fw-bold" data-status-updater-target="badge">
+              <%= @job_application.status.humanize %>
+            </span>
+          </div>
+          <%= form_with(model: @job_application, class: "status-switcher") do |f| %>
+            <%= f.select :status, JobApplication.statuses.keys.map { |s| [s.humanize, s] }, {}, 
+                { class: "form-select shadow-sm border-0 bg-light fw-bold", 
+                  data: { status_updater_target: "select", action: "change->status-updater#update change->this.form#requestSubmit" } } %>
           <% end %>
         </div>
 
-        <div class="mt-4">
-          <%= link_to "Edit this job application", edit_job_application_path(@job_application), class: "btn btn-secondary" %> |
-          <%= link_to "Back to job applications", job_applications_path, class: "btn btn-link" %>
-          <%= button_to "Destroy this job application", @job_application, method: :delete, class: "btn btn-danger d-inline", data: { confirm: "Are you sure?" } %>
+        <div class="mb-4">
+          <label class="text-muted small text-uppercase fw-bold d-block mb-2">Details</label>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2">
+              <i class="bi bi-geo-alt text-primary me-2"></i><%= @job_application.location %>
+            </li>
+            <li class="mb-2" data-controller="clipboard">
+              <i class="bi bi-link-45deg text-primary me-2"></i>
+              <%= link_to "Job Listing", @job_application.url, target: "_blank", class: "text-decoration-none me-2" if @job_application.url.present? %>
+              <% if @job_application.url.present? %>
+                <input type="text" class="d-none" data-clipboard-target="source" value="<%= @job_application.url %>">
+                <button type="button" class="btn btn-sm p-0 text-muted" data-action="click->clipboard#copy">
+                  <i class="bi bi-clipboard"></i>
+                </button>
+              <% end %>
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-calendar-check text-primary me-2"></i>Applied <%= @job_application.applied_at&.strftime("%b %d, %Y") || "N/A" %>
+            </li>
+          </ul>
         </div>
-      </div>
-    </div>
 
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3>Events</h3>
-      </div>
-      <div class="card-body">
-        <div id="events">
-          <%= render @job_application.events.order(scheduled_at: :desc) %>
+        <div class="mb-0">
+          <label class="text-muted small text-uppercase fw-bold d-block mb-2">Documents</label>
+          <div class="d-grid gap-2">
+            <% if @job_application.cv.attached? %>
+              <%= link_to url_for(@job_application.cv), class: "btn btn-light text-start shadow-sm d-flex justify-content-between align-items-center" do %>
+                <span><i class="bi bi-file-earmark-pdf text-danger me-2"></i>CV / Resume</span>
+                <i class="bi bi-download small"></i>
+              <% end %>
+            <% end %>
+            <% if @job_application.cover_letter.attached? %>
+              <%= link_to url_for(@job_application.cover_letter), class: "btn btn-light text-start shadow-sm d-flex justify-content-between align-items-center" do %>
+                <span><i class="bi bi-file-earmark-text text-primary me-2"></i>Cover Letter</span>
+                <i class="bi bi-download small"></i>
+              <% end %>
+            <% end %>
+          </div>
         </div>
-        <hr>
-        <h4>Add Event</h4>
-        <%= turbo_frame_tag "new_event" do %>
-          <%= render "events/form", job_application: @job_application, event: Event.new %>
-        <% end %>
+      </div>
+      <div class="card-footer bg-white border-0 p-4 pt-0">
+        <div class="d-flex justify-content-between mt-3">
+          <%= link_to edit_job_application_path(@job_application), class: "btn btn-sm btn-outline-secondary" do %>
+            <i class="bi bi-pencil me-1"></i>Edit
+          <% end %>
+          <%= button_to @job_application, method: :delete, class: "btn btn-sm btn-outline-danger", data: { confirm: "Are you sure?" } do %>
+            <i class="bi bi-trash me-1"></i>Delete
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="col-md-4">
-    <div class="card mb-4">
-      <div class="card-header">
-        <h3>Notes</h3>
-      </div>
-      <div class="card-body">
-        <div id="notes">
-          <%= render @job_application.notes.order(created_at: :desc) %>
+  <!-- Main Content (66%) -->
+  <div class="col-md-8">
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-4">
+        <h5 class="fw-bold mb-3">Job Description</h5>
+        <div class="trix-content">
+          <%= @job_application.description %>
         </div>
-        <hr>
-        <h4>Add Note</h4>
-        <%= turbo_frame_tag "new_note" do %>
-          <%= render "notes/form", job_application: @job_application, note: Note.new %>
-        <% end %>
+      </div>
+    </div>
+
+    <!-- Tabbed Activity Interface -->
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white border-0 pt-4 px-4">
+        <ul class="nav nav-pills" id="activityTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="timeline-tab" data-bs-toggle="pill" data-bs-target="#timeline" type="button" role="tab">Timeline</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="notes-tab" data-bs-toggle="pill" data-bs-target="#notes-pane" type="button" role="tab">Notes</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="prep-tab" data-bs-toggle="pill" data-bs-target="#prep" type="button" role="tab">Interview Prep</button>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body p-4">
+        <div class="tab-content" id="activityTabsContent">
+          <!-- Timeline Tab -->
+          <div class="tab-pane fade show active" id="timeline" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 class="fw-bold mb-0">Activity Feed</h5>
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                  <i class="bi bi-calendar-plus me-1"></i>Add Event
+                </button>
+                <button type="button" class="btn btn-sm btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+                  <i class="bi bi-sticky me-1"></i>Add Note
+                </button>
+              </div>
+            </div>
+            <div class="timeline" id="activity-timeline">
+              <% combined_activity = (@job_application.notes + @job_application.events).sort_by { |a| a.respond_to?(:scheduled_at) ? a.scheduled_at : a.created_at }.reverse %>
+              <% combined_activity.each do |item| %>
+                <div class="timeline-item">
+                  <% if item.is_a?(Event) %>
+                    <%= render "events/event", event: item %>
+                  <% else %>
+                    <%= render "notes/note", note: item %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Notes Tab -->
+          <div class="tab-pane fade" id="notes-pane" role="tabpanel">
+             <div id="all-notes" class="row">
+               <%= render @job_application.notes.order(created_at: :desc) %>
+             </div>
+          </div>
+
+          <!-- Interview Prep Tab -->
+          <div class="tab-pane fade" id="prep" role="tabpanel">
+            <div id="interview-prep-notes">
+              <%= render @job_application.notes.where(category: ["Question", "Answer"]).order(created_at: :desc) %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modals -->
+<%= render "events/modal", job_application: @job_application %>
+<%= render "notes/modal", job_application: @job_application %>

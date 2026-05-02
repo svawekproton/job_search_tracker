@@ -1,27 +1,37 @@
-<h1 class="mb-4">Dashboard</h1>
-
-<div class="row mb-4">
-  <div class="col-md-4">
-    <div class="card text-white bg-info mb-3">
-      <div class="card-body text-center">
-        <h5 class="card-title">Total Applications</h5>
-        <p class="card-text display-4"><%= @total_applications %></p>
+<div class="row mb-5">
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm text-center py-4">
+      <div class="card-body">
+        <div class="display-5 mb-2"><i class="bi bi-briefcase text-primary"></i></div>
+        <h6 class="text-muted text-uppercase small">Total Applications</h6>
+        <h2 class="fw-bold mb-0"><%= @total_applications %></h2>
       </div>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="card text-white bg-primary mb-3">
-      <div class="card-body text-center">
-        <h5 class="card-title">Active Interviews</h5>
-        <p class="card-text display-4"><%= @active_interviews %></p>
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm text-center py-4">
+      <div class="card-body">
+        <div class="display-5 mb-2"><i class="bi bi-calendar-event text-warning"></i></div>
+        <h6 class="text-muted text-uppercase small">Active Interviews</h6>
+        <h2 class="fw-bold mb-0"><%= @active_interviews %></h2>
       </div>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="card text-white bg-success mb-3">
-      <div class="card-body text-center">
-        <h5 class="card-title">Offers Received</h5>
-        <p class="card-text display-4"><%= @offers %></p>
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm text-center py-4">
+      <div class="card-body">
+        <div class="display-5 mb-2"><i class="bi bi-award text-success"></i></div>
+        <h6 class="text-muted text-uppercase small">Offers Received</h6>
+        <h2 class="fw-bold mb-0"><%= @offers %></h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm text-center py-4">
+      <div class="card-body">
+        <div class="display-5 mb-2"><i class="bi bi-graph-up text-info"></i></div>
+        <h6 class="text-muted text-uppercase small">Success Rate</h6>
+        <h2 class="fw-bold mb-0"><%= @success_rate ? "#{@success_rate}%" : "N/A" %></h2>
       </div>
     </div>
   </div>
@@ -29,27 +39,61 @@
 
 <div class="row">
   <div class="col-md-8">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Upcoming Events</h3>
-        <%= link_to "View All Applications", job_applications_path, class: "btn btn-sm btn-outline-primary" %>
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+        <h4 class="fw-bold mb-0">Upcoming Interviews</h4>
+        <%= link_to "View Pipeline", job_applications_path, class: "btn btn-sm btn-outline-primary" %>
       </div>
-      <div class="card-body">
-        <% if @recent_events.any? %>
-          <div class="list-group">
-            <% @recent_events.each do |event| %>
-              <%= link_to event.job_application, class: "list-group-item list-group-item-action" do %>
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1"><%= event.title %></h5>
-                  <small><%= event.scheduled_at.strftime("%b %d, %H:%M") %></small>
+      <div class="card-body p-4">
+        <% if @upcoming_events.any? %>
+          <div class="timeline">
+            <% @upcoming_events.each do |event| %>
+              <div class="timeline-item">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h6 class="fw-bold mb-1"><%= event.title %></h6>
+                    <p class="text-muted mb-0">
+                      <i class="bi bi-building me-1"></i><%= event.job_application.company_name %> 
+                      <span class="mx-2">•</span>
+                      <i class="bi bi-clock me-1"></i><%= event.scheduled_at.strftime("%b %d, %H:%M %p") %>
+                    </p>
+                  </div>
+                  <span class="badge <%= status_badge_classes(event.job_application.status) %>">
+                    <%= event.job_application.status.humanize %>
+                  </span>
                 </div>
-                <p class="mb-1"><%= event.job_application.company_name %> - <%= event.event_type.humanize %></p>
-              <% end %>
+              </div>
             <% end %>
           </div>
         <% else %>
-          <p class="text-muted">No upcoming events scheduled.</p>
+          <div class="text-center py-5">
+            <i class="bi bi-calendar-x display-4 text-muted"></i>
+            <p class="text-muted mt-2">No upcoming interviews scheduled.</p>
+          </div>
         <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-white border-0 pt-4 px-4">
+        <h4 class="fw-bold mb-0">Recent Activity</h4>
+      </div>
+      <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+          <% @recent_activity.each do |app| %>
+            <li class="list-group-item px-4 py-3 border-0 border-bottom">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="fw-bold mb-0"><%= app.company_name %></h6>
+                  <small class="text-muted"><%= app.position %></small>
+                </div>
+                <small class="text-muted"><%= time_ago_in_words(app.updated_at) %> ago</small>
+              </div>
+            </li>
+          <% end %>
+        </ul>
       </div>
     </div>
   </div>

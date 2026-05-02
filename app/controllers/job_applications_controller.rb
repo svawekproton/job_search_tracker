@@ -4,6 +4,9 @@ class JobApplicationsController < ApplicationController
   # GET /job_applications or /job_applications.json
   def index
     @job_applications = JobApplication.all
+    @job_applications = @job_applications.search(params[:query]) if params[:query].present?
+    @job_applications = @job_applications.where(status: params[:status]) if params[:status].present?
+    @job_applications = @job_applications.order(applied_at: :desc)
   end
 
   # GET /job_applications/1 or /job_applications/1.json

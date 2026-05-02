@@ -4,7 +4,8 @@ RSpec.describe Note, type: :model do
   let(:job_application) { 
     JobApplication.create!(
       company_name: "Google", 
-      position: "Software Engineer"
+      position: "Software Engineer",
+      applied_at: Date.today
     ) 
   }
 

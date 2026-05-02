@@ -1,17 +1,17 @@
 <%= form_with(model: [job_application, event], local: false, class: "mb-3") do |form| %>
   <div class="mb-3">
     <%= form.label :title, class: "form-label" %>
-    <%= form.text_field :title, class: "form-control" %>
+    <%= form.text_field :title, class: "form-control", required: true %>
   </div>
 
   <div class="mb-3">
     <%= form.label :event_type, class: "form-label" %>
-    <%= form.select :event_type, Event.event_types.keys.map { |e| [e.humanize, e] }, {}, class: "form-select" %>
+    <%= form.select :event_type, Event.event_types.keys.map { |e| [e.humanize, e] }, {}, class: "form-select", required: true %>
   </div>
 
   <div class="mb-3">
     <%= form.label :scheduled_at, class: "form-label" %>
-    <%= form.datetime_field :scheduled_at, class: "form-control" %>
+    <%= form.datetime_field :scheduled_at, class: "form-control", required: true %>
   </div>
 
   <div class="mb-3">

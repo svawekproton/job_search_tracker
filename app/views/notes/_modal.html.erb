@@ -1,0 +1,15 @@
+<div class="modal fade" id="addNoteModal" tabindex="-1" aria-hidden="true" data-controller="modal" data-action="turbo:submit-end->modal#close">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold">Add Note</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= turbo_frame_tag "new_note" do %>
+          <%= render "notes/form", job_application: job_application, note: Note.new %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
