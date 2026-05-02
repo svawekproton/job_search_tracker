@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Job Applications</h1>
+  <%= link_to "New Job Application", new_job_application_path, class: "btn btn-success" %>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>Company</th>
+        <th>Position</th>
+        <th>Status</th>
+        <th>Applied At</th>
+        <th>Location</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="job_applications">
+      <% @job_applications.each do |job_application| %>
+        <tr>
+          <td><%= job_application.company_name %></td>
+          <td><%= job_application.position %></td>
+          <td>
+            <span class="badge bg-<%= status_badge_color(job_application.status) %>">
+              <%= job_application.status.humanize %>
+            </span>
+          </td>
+          <td><%= job_application.applied_at %></td>
+          <td><%= job_application.location %></td>
+          <td>
+            <%= link_to "Show", job_application, class: "btn btn-sm btn-outline-primary" %>
+            <%= link_to "Edit", edit_job_application_path(job_application), class: "btn btn-sm btn-outline-secondary" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

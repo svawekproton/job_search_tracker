@@ -1,0 +1,6 @@
+<div id="<%= dom_id note %>" class="border-bottom mb-3 pb-2">
+  <strong><%= note.category %></strong> <small class="text-muted"><%= time_ago_in_words(note.created_at) %> ago</small>
+  <div class="trix-content mt-1">
+    <%= note.content %>
+  </div>
+</div>

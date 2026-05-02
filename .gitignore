@@ -1,0 +1,45 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
+
+# Ignore master key for decrypting credentials and symlinked secrets.
+/config/master.key
+/config/credentials/*.key
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-wal
+
+# Ignore the default SQLite database in storage/ (Rails 8 default)
+/storage/*.sqlite3
+/storage/*.sqlite3-journal
+/storage/*.sqlite3-wal
+
+# Ignore auto-generated assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
+/public/assets
+
+# Ignore node_modules
+/node_modules
+/yarn-error.log
+
+# Ignore environment-specific files
+/.env*
+
+# Ignore IDE settings
+/.vscode
+/.idea
+
+# Ignore macOS files
+.DS_Store

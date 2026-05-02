@@ -1,0 +1,14 @@
+<div id="<%= dom_id event %>" class="card mb-2 bg-light">
+  <div class="card-body py-2">
+    <div class="d-flex justify-content-between">
+      <h5 class="card-title mb-0"><%= event.title %></h5>
+      <span class="badge bg-info text-dark"><%= event.event_type.humanize %></span>
+    </div>
+    <div class="text-muted small mb-1">
+      <%= event.scheduled_at.strftime("%B %d, %Y at %I:%M %p") %>
+    </div>
+    <% if event.notes.present? %>
+      <p class="card-text small"><%= event.notes %></p>
+    <% end %>
+  </div>
+</div>

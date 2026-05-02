@@ -1,0 +1,60 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="row mt-4">
+  <div class="col-md-8">
+    <div class="card mb-4">
+      <div class="card-body">
+        <%= render @job_application %>
+        
+        <div class="mt-3">
+          <% if @job_application.cv.attached? %>
+            <%= link_to "Download CV", url_for(@job_application.cv), class: "btn btn-outline-primary btn-sm" %>
+          <% end %>
+          <% if @job_application.cover_letter.attached? %>
+            <%= link_to "Download Cover Letter", url_for(@job_application.cover_letter), class: "btn btn-outline-primary btn-sm" %>
+          <% end %>
+        </div>
+
+        <div class="mt-4">
+          <%= link_to "Edit this job application", edit_job_application_path(@job_application), class: "btn btn-secondary" %> |
+          <%= link_to "Back to job applications", job_applications_path, class: "btn btn-link" %>
+          <%= button_to "Destroy this job application", @job_application, method: :delete, class: "btn btn-danger d-inline", data: { confirm: "Are you sure?" } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Events</h3>
+      </div>
+      <div class="card-body">
+        <div id="events">
+          <%= render @job_application.events.order(scheduled_at: :desc) %>
+        </div>
+        <hr>
+        <h4>Add Event</h4>
+        <%= turbo_frame_tag "new_event" do %>
+          <%= render "events/form", job_application: @job_application, event: Event.new %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Notes</h3>
+      </div>
+      <div class="card-body">
+        <div id="notes">
+          <%= render @job_application.notes.order(created_at: :desc) %>
+        </div>
+        <hr>
+        <h4>Add Note</h4>
+        <%= turbo_frame_tag "new_note" do %>
+          <%= render "notes/form", job_application: @job_application, note: Note.new %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

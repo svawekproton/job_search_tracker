@@ -1,0 +1,56 @@
+<h1 class="mb-4">Dashboard</h1>
+
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card text-white bg-info mb-3">
+      <div class="card-body text-center">
+        <h5 class="card-title">Total Applications</h5>
+        <p class="card-text display-4"><%= @total_applications %></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-white bg-primary mb-3">
+      <div class="card-body text-center">
+        <h5 class="card-title">Active Interviews</h5>
+        <p class="card-text display-4"><%= @active_interviews %></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-white bg-success mb-3">
+      <div class="card-body text-center">
+        <h5 class="card-title">Offers Received</h5>
+        <p class="card-text display-4"><%= @offers %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Upcoming Events</h3>
+        <%= link_to "View All Applications", job_applications_path, class: "btn btn-sm btn-outline-primary" %>
+      </div>
+      <div class="card-body">
+        <% if @recent_events.any? %>
+          <div class="list-group">
+            <% @recent_events.each do |event| %>
+              <%= link_to event.job_application, class: "list-group-item list-group-item-action" do %>
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1"><%= event.title %></h5>
+                  <small><%= event.scheduled_at.strftime("%b %d, %H:%M") %></small>
+                </div>
+                <p class="mb-1"><%= event.job_application.company_name %> - <%= event.event_type.humanize %></p>
+              <% end %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-muted">No upcoming events scheduled.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

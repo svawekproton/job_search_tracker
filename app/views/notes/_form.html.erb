@@ -1,0 +1,13 @@
+<%= form_with(model: [job_application, note], local: false, class: "mb-3") do |form| %>
+  <div class="mb-3">
+    <%= form.label :category, class: "form-label" %>
+    <%= form.select :category, ["Question", "Answer", "General"], {}, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :content, class: "form-label" %>
+    <%= form.rich_text_area :content, class: "form-control" %>
+  </div>
+
+  <%= form.submit "Save Note", class: "btn btn-primary" %>
+<% end %>
