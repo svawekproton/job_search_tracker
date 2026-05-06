@@ -11,7 +11,7 @@
         <%= form_with url: session_path do |form| %>
           <div class="mb-3">
             <%= form.label :email_address, class: "form-label fw-semibold" %>
-            <%= form.email_field :email_address, class: "form-control form-control-lg bg-light border-0", placeholder: "name@example.com", autofocus: true, autocomplete: "username", value: params[:email_address] %>
+            <%= form.email_field :email_address, class: "form-control form-control-lg bg-light border shadow-sm", placeholder: "name@example.com", autofocus: true, autocomplete: "username", value: params[:email_address] %>
           </div>
 
           <div class="mb-3">
@@ -19,7 +19,7 @@
               <%= form.label :password, class: "form-label fw-semibold" %>
               <%= link_to "Forgot password?", new_password_path, class: "text-muted small text-decoration-none" %>
             </div>
-            <%= form.password_field :password, class: "form-control form-control-lg bg-light border-0", placeholder: "Enter your password", autocomplete: "current-password", maxlength: 72 %>
+            <%= form.password_field :password, class: "form-control form-control-lg bg-light border shadow-sm", placeholder: "Enter your password", autocomplete: "current-password", maxlength: 72 %>
           </div>
 
           <div class="d-grid gap-2 mt-4">

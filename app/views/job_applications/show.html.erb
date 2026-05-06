@@ -79,7 +79,7 @@
       <div class="card-body p-4">
         <h5 class="fw-bold mb-3">Job Description</h5>
         <div class="trix-content">
-          <%= @job_application.description %>
+          <%= simple_format(@job_application.description) %>
         </div>
       </div>
     </div>
