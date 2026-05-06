@@ -1,0 +1,29 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card shadow border-0">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <i class="bi bi-key text-primary display-4"></i>
+          <h2 class="fw-bold mt-2">New password</h2>
+          <p class="text-muted">Set a strong password to secure your account</p>
+        </div>
+
+        <%= form_with url: password_path(params[:token]), method: :put do |form| %>
+          <div class="mb-3">
+            <%= form.label :password, "New password", class: "form-label fw-semibold" %>
+            <%= form.password_field :password, class: "form-control form-control-lg bg-light border-0", placeholder: "Enter new password", required: true, autocomplete: "new-password", maxlength: 72 %>
+          </div>
+
+          <div class="mb-4">
+            <%= form.label :password_confirmation, "Confirm new password", class: "form-label fw-semibold" %>
+            <%= form.password_field :password_confirmation, class: "form-control form-control-lg bg-light border-0", placeholder: "Repeat new password", required: true, autocomplete: "new-password", maxlength: 72 %>
+          </div>
+
+          <div class="d-grid gap-2">
+            <%= form.submit "Update password", class: "btn btn-primary btn-lg fw-bold" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

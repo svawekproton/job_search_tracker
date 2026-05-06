@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resource :session
+  resources :passwords, param: :token
+  resources :registrations, only: [:new, :create]
   root "dashboard#index"
 
   resources :job_applications do

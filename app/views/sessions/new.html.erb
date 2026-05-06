@@ -1,0 +1,38 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card shadow border-0">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <i class="bi bi-rocket-takeoff text-primary display-4"></i>
+          <h2 class="fw-bold mt-2">Welcome back</h2>
+          <p class="text-muted">Log in to your account to continue</p>
+        </div>
+
+        <%= form_with url: session_path do |form| %>
+          <div class="mb-3">
+            <%= form.label :email_address, class: "form-label fw-semibold" %>
+            <%= form.email_field :email_address, class: "form-control form-control-lg bg-light border-0", placeholder: "name@example.com", autofocus: true, autocomplete: "username", value: params[:email_address] %>
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <%= form.label :password, class: "form-label fw-semibold" %>
+              <%= link_to "Forgot password?", new_password_path, class: "text-muted small text-decoration-none" %>
+            </div>
+            <%= form.password_field :password, class: "form-control form-control-lg bg-light border-0", placeholder: "Enter your password", autocomplete: "current-password", maxlength: 72 %>
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <%= form.submit "Sign in", class: "btn btn-primary btn-lg fw-bold" %>
+          </div>
+        <% end %>
+
+        <hr class="my-4">
+
+        <div class="text-center">
+          <p class="mb-0 text-muted">Don't have an account? <%= link_to "Sign up", new_registration_path, class: "text-primary fw-bold text-decoration-none" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

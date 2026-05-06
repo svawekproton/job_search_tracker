@@ -31,7 +31,14 @@
 </div>
 
 <div id="job_applications">
-  <% @job_applications.each do |job_application| %>
-    <%= render job_application %>
+  <% if @job_applications.any? %>
+    <% @job_applications.each do |job_application| %>
+      <%= render job_application %>
+    <% end %>
+  <% else %>
+    <div class="text-center py-5">
+      <i class="bi bi-search display-4 text-muted"></i>
+      <p class="text-muted mt-2">No applications found.</p>
+    </div>
   <% end %>
 </div>

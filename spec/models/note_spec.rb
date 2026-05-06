@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Note, type: :model do
+  let(:user) { User.create!(email_address: "test@example.com", password: "password", password_confirmation: "password") }
   let(:job_application) { 
-    JobApplication.create!(
+    user.job_applications.create!(
       company_name: "Google", 
       position: "Software Engineer",
       applied_at: Date.today

@@ -1,0 +1,30 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card shadow border-0">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <i class="bi bi-shield-lock text-primary display-4"></i>
+          <h2 class="fw-bold mt-2">Forgot password?</h2>
+          <p class="text-muted">Enter your email and we'll send instructions</p>
+        </div>
+
+        <%= form_with url: passwords_path do |form| %>
+          <div class="mb-4">
+            <%= form.label :email_address, class: "form-label fw-semibold" %>
+            <%= form.email_field :email_address, class: "form-control form-control-lg bg-light border-0", placeholder: "name@example.com", required: true, autofocus: true, autocomplete: "username", value: params[:email_address] %>
+          </div>
+
+          <div class="d-grid gap-2">
+            <%= form.submit "Email reset instructions", class: "btn btn-primary btn-lg fw-bold" %>
+          </div>
+        <% end %>
+
+        <hr class="my-4">
+
+        <div class="text-center">
+          <%= link_to "Back to sign in", new_session_path, class: "text-primary fw-bold text-decoration-none" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+class User < ApplicationRecord
+  has_secure_password
+  has_many :sessions, dependent: :destroy
+  has_many :job_applications, dependent: :destroy
+  has_many :events, through: :job_applications
+  has_many :notes, through: :job_applications
+
+  normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, presence: true, length: { minimum: 6 }, if: -> { new_record? || password.present? }
+end

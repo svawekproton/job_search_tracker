@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe JobApplication, type: :model do
+  let(:user) { User.create!(email_address: "test@example.com", password: "password", password_confirmation: "password") }
+
   it "is valid with valid attributes" do
-    job_application = JobApplication.new(
+    job_application = user.job_applications.new(
       company_name: "Google",
       position: "Software Engineer",
       status: :applied,
@@ -12,17 +14,27 @@ RSpec.describe JobApplication, type: :model do
   end
 
   it "is invalid without an applied_at date" do
-    job_application = JobApplication.new(applied_at: nil)
+    job_application = user.job_applications.new(applied_at: nil)
     expect(job_application).not_to be_valid
   end
 
   it "is invalid without a company_name" do
-    job_application = JobApplication.new(company_name: nil)
+    job_application = user.job_applications.new(company_name: nil)
     expect(job_application).not_to be_valid
   end
 
   it "is invalid without a position" do
-    job_application = JobApplication.new(position: nil)
+    job_application = user.job_applications.new(position: nil)
+    expect(job_application).not_to be_valid
+  end
+
+  it "is invalid without a user" do
+    job_application = JobApplication.new(
+      company_name: "Google",
+      position: "Software Engineer",
+      status: :applied,
+      applied_at: Date.today
+    )
     expect(job_application).not_to be_valid
   end
 
