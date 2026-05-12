@@ -1,6 +1,7 @@
 ---
 name: rails-feature-implementation
-description: Use when adding or changing a feature in this Rails 8 app, especially changes involving models, controllers, routes, migrations, views, Turbo, background jobs, or RSpec specs. Trigger phrases include: add feature, implement, change behavior, add field, add workflow, add CRUD, update form, add filtering, add sorting.
+description: >-
+   Use when adding or changing a feature in this Rails 8 app, especially changes involving models, controllers, routes, migrations, views, Turbo, background jobs, or RSpec specs. Trigger phrases include: add feature, implement, change behavior, add field, add workflow, add CRUD, update form, add filtering, add sorting.
 ---
 
 # Rails Feature Implementation

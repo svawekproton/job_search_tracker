@@ -1,6 +1,7 @@
 ---
 name: rails-bug-fix
-description: Use when diagnosing and fixing a Rails bug, failing spec, runtime error, regression, broken Turbo behavior, incorrect query result, or unexpected app behavior. Trigger phrases include: failing spec, bug, error, broken, not working, regression, fix this, investigate failure.
+description: >-
+   Use when diagnosing and fixing a Rails bug, failing spec, runtime error, regression, broken Turbo behavior, incorrect query result, or unexpected app behavior. Trigger phrases include: failing spec, bug, error, broken, not working, regression, fix this, investigate failure.
 ---
 
 # Rails Bug Fix

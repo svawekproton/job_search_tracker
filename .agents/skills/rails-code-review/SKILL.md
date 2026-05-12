@@ -1,6 +1,7 @@
 ---
 name: rails-code-review
-description: Use when reviewing a Rails diff, PR, branch, or Codex-generated change before merging. Focus on correctness, Rails 8 conventions, architecture, security, Hotwire/Turbo behavior, tests, and unnecessary complexity. Trigger phrases include: review diff, code review, PR review, check my changes, is this good, before merge.
+description: >-
+   Use when reviewing a Rails diff, PR, branch, or Codex-generated change before merging. Focus on correctness, Rails 8 conventions, architecture, security, Hotwire/Turbo behavior, tests, and unnecessary complexity. Trigger phrases include: review diff, code review, PR review, check my changes, is this good, before merge.
 ---
 
 # Rails Code Review
