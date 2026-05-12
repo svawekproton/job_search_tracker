@@ -17,10 +17,10 @@ class EventsController < ApplicationController
   private
 
   def set_job_application
-    @job_application = Current.user.job_applications.find(params[:job_application_id])
+    @job_application = Current.user.job_applications.find(params.expect(:job_application_id))
   end
 
   def event_params
-    params.require(:event).permit(:title, :event_type, :scheduled_at, :notes)
+    params.expect(event: [ :title, :event_type, :scheduled_at, :notes ])
   end
 end
