@@ -1,4 +1,15 @@
 <%= form_with(model: [job_application, event], local: false, class: "mb-3") do |form| %>
+  <% if event.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <h6 class="fw-bold mb-2">Please fix the following:</h6>
+      <ul class="mb-0 ps-3">
+        <% event.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="mb-3">
     <%= form.label :title, class: "form-label" %>
     <%= form.text_field :title, class: "form-control", required: true %>

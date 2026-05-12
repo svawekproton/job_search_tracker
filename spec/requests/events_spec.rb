@@ -69,6 +69,23 @@ RSpec.describe "Events", type: :request do
       expect(flash[:alert]).to eq("Error creating event.")
     end
 
+    it "returns unprocessable turbo-stream and re-renders form on turbo failure" do
+      expect {
+        post job_application_events_path(job_application), params: {
+          event: {
+            title: nil,
+            event_type: "call",
+            scheduled_at: Time.zone.parse("2026-06-01 10:30:00")
+          }
+        }, headers: { "ACCEPT" => "text/vnd.turbo-stream.html" }
+      }.not_to change(Event, :count)
+
+      expect(response).to have_http_status(422)
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include('target="new_event"')
+      expect(response.body).to include("Please fix the following:")
+    end
+
     it "returns not found for another user's job application" do
       post job_application_events_path(other_application), params: valid_params
 

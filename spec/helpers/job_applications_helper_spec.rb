@@ -28,4 +28,32 @@ RSpec.describe JobApplicationsHelper, type: :helper do
       expect(helper.status_border_color("other")).to eq("#DEE2E6")
     end
   end
+
+  describe "#combined_activity_for" do
+    it "returns notes and events in reverse activity order" do
+      user = User.create!(email_address: "activity@example.com", password: "password", password_confirmation: "password")
+      job_application = user.job_applications.create!(
+        company_name: "Acme",
+        position: "Engineer",
+        applied_at: Date.current
+      )
+      older_note = job_application.notes.create!(
+        category: "General",
+        content: "Older note",
+        created_at: Time.zone.local(2026, 1, 1, 9)
+      )
+      newer_note = job_application.notes.create!(
+        category: "Question",
+        content: "Newer note",
+        created_at: Time.zone.local(2026, 1, 2, 9)
+      )
+      event = job_application.events.create!(
+        title: "Interview",
+        event_type: "technical_interview",
+        scheduled_at: Time.zone.local(2026, 1, 3, 9)
+      )
+
+      expect(helper.combined_activity_for(job_application)).to eq([ event, newer_note, older_note ])
+    end
+  end
 end

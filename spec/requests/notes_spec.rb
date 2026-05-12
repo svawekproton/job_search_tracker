@@ -54,6 +54,18 @@ RSpec.describe "Notes", type: :request do
       expect(flash[:alert]).to eq("Error creating note.")
     end
 
+    it "returns unprocessable turbo-stream and re-renders form on turbo failure" do
+      expect {
+        post job_application_notes_path(job_application), params: { note: { category: "General", content: nil } },
+          headers: { "ACCEPT" => "text/vnd.turbo-stream.html" }
+      }.not_to change(Note, :count)
+
+      expect(response).to have_http_status(422)
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include('target="new_note"')
+      expect(response.body).to include("Please fix the following:")
+    end
+
     it "returns not found for another user's job application" do
       post job_application_notes_path(other_application), params: valid_params
 

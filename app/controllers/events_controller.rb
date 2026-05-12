@@ -9,6 +9,13 @@ class EventsController < ApplicationController
         format.turbo_stream
         format.html { redirect_to @job_application, notice: "Event was successfully created." }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "new_event",
+            partial: "events/form",
+            locals: { job_application: @job_application, event: @event }
+          ), status: :unprocessable_entity
+        end
         format.html { redirect_to @job_application, alert: "Error creating event." }
       end
     end

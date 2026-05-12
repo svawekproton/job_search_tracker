@@ -1,7 +1,18 @@
 <%= form_with(model: [job_application, note], local: false, class: "mb-3") do |form| %>
+  <% if note.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <h6 class="fw-bold mb-2">Please fix the following:</h6>
+      <ul class="mb-0 ps-3">
+        <% note.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="mb-3">
     <%= form.label :category, class: "form-label" %>
-    <%= form.select :category, ["Question", "Answer", "General"], {}, class: "form-select" %>
+    <%= form.select :category, Note.category_options, {}, class: "form-select" %>
   </div>
 
   <div class="mb-3">

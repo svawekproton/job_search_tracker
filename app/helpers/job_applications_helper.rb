@@ -26,4 +26,10 @@ module JobApplicationsHelper
     else "#DEE2E6"
     end
   end
+
+  def combined_activity_for(job_application)
+    (job_application.notes + job_application.events)
+      .sort_by { |activity| activity.respond_to?(:scheduled_at) ? activity.scheduled_at : activity.created_at }
+      .reverse
+  end
 end

@@ -9,6 +9,13 @@ class NotesController < ApplicationController
         format.turbo_stream
         format.html { redirect_to @job_application, notice: "Note was successfully created." }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "new_note",
+            partial: "notes/form",
+            locals: { job_application: @job_application, note: @note }
+          ), status: :unprocessable_entity
+        end
         format.html { redirect_to @job_application, alert: "Error creating note." }
       end
     end
