@@ -1,59 +1,117 @@
-# Job Search Tracker - Detailed Design Specification
+# Job Search Tracker - Design Specification
+
+This document describes the current UI direction and separates implemented behavior from future design goals.
 
 ## 1. Design Philosophy
-The goal is to create a professional, minimalist, and highly functional interface that minimizes cognitive load during the stressful process of job hunting. The design focuses on "Actionability" and "Visibility."
+
+The interface should stay professional, minimal, and useful during a job search. The product favors visibility, fast status updates, and low-friction note/event capture over decorative UI.
 
 ## 2. Visual Identity
-- **Typography:** Primary font is **Inter** (via Google Fonts or system stack). It provides excellent readability for dense data.
+
+- **Typography:** The app currently relies on the configured Rails/Bootstrap font stack. Inter remains an optional future refinement.
 - **Color Palette:**
-  - **Background:** `#F8F9FA` (Light Gray) - creates a soft canvas.
-  - **Primary Accents:** `#0D6EFD` (Bootstrap Blue) for primary actions.
+  - **Background:** Light gray Bootstrap surface (`bg-light`)
+  - **Primary Accents:** Bootstrap primary blue for main actions
   - **Status Colors:**
-    - `Applied`: Soft Blue (`#CFE2FF` bg, `#084298` text)
-    - `Interviewing`: Soft Yellow/Orange (`#FFF3CD` bg, `#856404` text)
-    - `Offered`: Soft Green (`#D1E7DD` bg, `#0F5132` text)
-    - `Rejected`: Soft Red (`#F8D7DA` bg, `#842029` text)
-    - `Withdrawn`: Neutral Gray (`#E2E3E5` bg, `#41464B` text)
+    - `Applied`: soft blue
+    - `Interviewing`: soft yellow/orange
+    - `Offered`: soft green
+    - `Rejected`: soft red
+    - `Withdrawn`: neutral gray
 
-## 3. Layout & Page Specifications
+## 3. Implemented Layout & Pages
 
-### A. Dashboard (The Control Center)
-- **Top Metrics Row:** 4 large, borderless cards with subtle icons (using Bootstrap Icons) showing total applications, active interviews, offers, and success rate.
-- **Main View (2-column):**
-  - **Left (70%):** "Upcoming Interviews" list. Uses a timeline UI where each entry shows the company logo (or initial), time, and event type.
-  - **Right (30%):** "Quick Stats" or "Recent Activity" feed using a condensed list group.
+### Dashboard
 
-### B. Job Applications Index (The Pipeline)
-- **Header:** Integrated search bar with "Add New Application" button as a primary CTA.
-- **Filter Bar:** A horizontal button group or dropdowns for filtering by Status, Date Range, or Location.
-- **Card-based List:**
-  - Each job is a card (`.card`) with a hover effect (`.shadow-sm` on hover).
-  - Left border of the card is color-coded based on the status.
-  - Display: Company Name (H5), Position, Location, and a relative date (e.g., "Applied 2 days ago").
+Implemented:
 
-### C. Job Application Show Page (The Detail View)
-Split-pane layout for maximum information density without clutter.
-- **Left Sidebar (33%):**
-  - **Company Info:** Basic metadata (URL, Location).
-  - **Status Switcher:** A prominent dropdown to change status instantly via Turbo.
-  - **Documents:** A dedicated section for CV and Cover Letter with "Download" and "Preview" buttons.
-- **Main Content (66%):**
-  - **Job Description:** Rendered via ActionText with a "Read More" toggle if too long.
-  - **Tabbed Activity Interface:**
-    - **Tab 1: Timeline:** Combined view of all Notes and Events in chronological order.
-    - **Tab 2: Notes:** Grid of rich-text notes with category tags.
-    - **Tab 3: Interview Prep:** A specialized view showing only "Question/Answer" category notes.
+- Four metric cards for total applications, active interviews, offers, and success rate.
+- Upcoming interviews list based on future scheduled events.
+- Recent activity list based on recently updated applications.
+- Link to the application pipeline.
 
-### D. Forms & Modals
-- **Contextual Modals:** Adding a Note or Scheduling an Event happens in a Bootstrap Modal. This prevents the user from losing context of the job application they are looking at.
-- **Rich Text:** Trix editor (ActionText) customized with a simplified toolbar to fit inside compact note blocks.
+Future refinements:
 
-## 4. Interactive Components (UX)
-- **Turbo Streams:** When a note is added, it slides into the timeline with a fade-in animation without a full page reload.
-- **Stimulus Controllers:** - `status-updater`: Changes the card's border color and badge text immediately upon selection.
-  - `clipboard`: One-click copy for the job URL or company name.
-  - `file-preview`: Shows the filename and size immediately after selecting a file for upload.
+- More detailed recent activity that includes notes and events, not only applications.
+- Additional quick stats if they support repeated job-search workflow.
+
+### Job Applications Index
+
+Implemented:
+
+- Header with primary new-application action.
+- Search by company, position, and location.
+- Status filter button group.
+- Card-based application list with status-colored left border.
+- Empty state when no applications match the current filters.
+
+Future refinements:
+
+- Date-range and location-specific filters.
+- More compact controls for very large pipelines.
+
+### Job Application Show Page
+
+Implemented:
+
+- Two-column desktop layout.
+- Sidebar with company, position, status switcher, location, URL, applied date, and uploaded documents.
+- Status badge and card border update via Stimulus before the server response.
+- Clipboard copy button for the job URL.
+- Main content area for the job description.
+- Tabbed activity area with Timeline, Notes, and Interview Prep tabs.
+- Combined timeline of notes and events.
+- Modal entry points for adding notes and events.
+
+Currently plain text:
+
+- Job application `description` is stored as a text column and rendered with `simple_format`.
+
+Future refinements:
+
+- Read-more toggle for long descriptions.
+- True preview actions for uploaded documents. Current document actions link to the stored file.
+- Possible Action Text migration for job descriptions if rich job-description formatting is required.
+
+### Forms & Modals
+
+Implemented:
+
+- Bootstrap modal forms for adding notes and events from the show page.
+- Action Text rich text editor for note content.
+- Plain text area for event notes.
+- File-selection preview behavior for CV and cover letter fields.
+
+Future refinements:
+
+- More robust inline Turbo validation handling for failed modal submissions.
+- Further Trix toolbar customization if note blocks become too visually dense.
+
+## 4. Interactive Components
+
+Implemented Stimulus controllers:
+
+- `status-updater`: updates the visible status badge and card border color immediately.
+- `clipboard`: copies the job URL.
+- `file-preview`: shows selected upload filename and size.
+- `modal-trigger`: opens note and event modals.
+
+Implemented Turbo behavior:
+
+- Successful note and event creation appends content to the relevant activity areas without a full page reload.
+
+Future refinements:
+
+- Animation for newly inserted timeline items.
+- Improved Turbo Stream validation responses that keep failed modal submissions in context.
 
 ## 5. Mobile Responsiveness
-- **Navigation:** Bottom navigation bar for mobile users (Dashboard, Jobs, Settings).
-- **Cards:** Stacked layout where the status badge moves to the top right of the card.
+
+Implemented:
+
+- Responsive Bootstrap layout that stacks content on smaller screens.
+- Bottom mobile navigation with Dashboard and Pipeline destinations.
+
+Known gap:
+
+- The Settings item in the mobile navigation is a placeholder and does not yet have a destination.
