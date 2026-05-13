@@ -32,4 +32,13 @@ module JobApplicationsHelper
       .sort_by { |activity| activity.respond_to?(:scheduled_at) ? activity.scheduled_at : activity.created_at }
       .reverse
   end
+
+  def safe_external_url(url)
+    return if url.blank?
+
+    uri = URI.parse(url)
+    url if uri.host.present? && JobApplication::ALLOWED_URL_SCHEMES.include?(uri.scheme)
+  rescue URI::InvalidURIError
+    nil
+  end
 end

@@ -56,4 +56,16 @@ RSpec.describe JobApplicationsHelper, type: :helper do
       expect(helper.combined_activity_for(job_application)).to eq([ event, newer_note, older_note ])
     end
   end
+
+  describe "#safe_external_url" do
+    it "returns HTTP and HTTPS URLs" do
+      expect(helper.safe_external_url("http://example.com/jobs")).to eq("http://example.com/jobs")
+      expect(helper.safe_external_url("https://example.com/jobs")).to eq("https://example.com/jobs")
+    end
+
+    it "rejects unsafe and malformed URLs" do
+      expect(helper.safe_external_url("javascript:alert(1)")).to be_nil
+      expect(helper.safe_external_url("https://")).to be_nil
+    end
+  end
 end

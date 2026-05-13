@@ -42,4 +42,35 @@ RSpec.describe JobApplication, type: :model do
     job_application = JobApplication.new
     expect(job_application.status).to eq("applied")
   end
+
+  it "allows HTTP and HTTPS listing URLs" do
+    http_application = user.job_applications.new(valid_attributes.merge(url: "http://example.com/jobs/rails"))
+    https_application = user.job_applications.new(valid_attributes.merge(url: "https://example.com/jobs/rails"))
+
+    expect(http_application).to be_valid
+    expect(https_application).to be_valid
+  end
+
+  it "rejects listing URLs with unsafe schemes" do
+    job_application = user.job_applications.new(valid_attributes.merge(url: "javascript:alert(1)"))
+
+    expect(job_application).not_to be_valid
+    expect(job_application.errors[:url]).to include("must be an HTTP or HTTPS URL")
+  end
+
+  it "rejects malformed listing URLs" do
+    job_application = user.job_applications.new(valid_attributes.merge(url: "https://"))
+
+    expect(job_application).not_to be_valid
+    expect(job_application.errors[:url]).to include("must be an HTTP or HTTPS URL")
+  end
+
+  def valid_attributes
+    {
+      company_name: "Google",
+      position: "Software Engineer",
+      status: :applied,
+      applied_at: Date.today
+    }
+  end
 end

@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Event, type: :model do
   let(:user) { User.create!(email_address: "test@example.com", password: "password", password_confirmation: "password") }
-  let(:job_application) { 
+  let(:job_application) {
     user.job_applications.create!(
-      company_name: "Google", 
+      company_name: "Google",
       position: "Software Engineer",
       applied_at: Date.today
-    ) 
+    )
   }
 
   it "is valid with valid attributes" do

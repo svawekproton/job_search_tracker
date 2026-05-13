@@ -9,14 +9,14 @@ class AddUserToJobApplications < ActiveRecord::Migration[8.1]
       # If no users exist, we raise an error to prevent creating an insecure placeholder.
       if User.none?
         raise <<~ERROR
-          
+
           ==============================================================================
           MIGRATION FAILURE: Orphan Job Applications Detected
           ==============================================================================
           The database has existing Job Applications, but no Users exist to own them.
-          To ensure data security and integrity, this migration will not create a 
+          To ensure data security and integrity, this migration will not create a
           default "placeholder" account.
-          
+
           ACTION REQUIRED:
           1. Manually create a User via the Rails console (bin/rails c) or seed file.
           2. Re-run this migration.
