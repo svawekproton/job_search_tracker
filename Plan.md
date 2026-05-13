@@ -100,11 +100,11 @@ Pending decision:
 - [x] Request specs for authentication, dashboard, job applications, notes, events, passwords, and registrations.
 - [x] System smoke flow for job application behavior.
 - [ ] Expand system coverage for invalid modal submissions and live status UI feedback.
-- [ ] Align `config/ci.rb` test commands with the RSpec-first test strategy.
+- [x] Align `config/ci.rb` test commands with the RSpec-first test strategy.
 
 ## 6. Known Follow-Up Work
 
 - [ ] Improve Turbo failure handling for note and event modal validation errors.
-- [ ] Finish documentation and CI alignment from `implementation_details.md`.
+- [x] Finish documentation and CI alignment from `implementation_details.md`.
 - [ ] Add reminder job behavior for upcoming interviews.
 - [ ] Decide whether job descriptions need Action Text.
