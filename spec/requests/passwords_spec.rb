@@ -33,6 +33,14 @@ RSpec.describe "Passwords", type: :request do
       expect(response).to redirect_to(new_session_path)
       expect(flash[:notice]).to eq("Password reset instructions sent (if user with that email address exists).")
     end
+
+    it "returns bad request when required parameters are missing" do
+      expect(PasswordsMailer).not_to receive(:reset)
+
+      post passwords_path, params: {}
+
+      expect(response).to have_http_status(:bad_request)
+    end
   end
 
   describe "GET /passwords/:token/edit" do
@@ -76,6 +84,15 @@ RSpec.describe "Passwords", type: :request do
 
       expect(response).to redirect_to(edit_password_path(token))
       expect(flash[:alert]).to eq("Passwords did not match.")
+      expect(user.reload.authenticate("password")).to be_present
+    end
+
+    it "returns bad request when required parameters are missing" do
+      token = user.password_reset_token
+
+      put password_path(token), params: { password: "newpassword" }
+
+      expect(response).to have_http_status(:bad_request)
       expect(user.reload.authenticate("password")).to be_present
     end
   end

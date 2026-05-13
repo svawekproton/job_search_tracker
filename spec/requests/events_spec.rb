@@ -91,5 +91,21 @@ RSpec.describe "Events", type: :request do
 
       expect(response).to have_http_status(:not_found)
     end
+
+    it "returns bad request when required parameters are missing" do
+      expect {
+        post job_application_events_path(job_application), params: { title: "Missing wrapper" }
+      }.not_to change(Event, :count)
+
+      expect(response).to have_http_status(:bad_request)
+    end
+  end
+
+  describe "POST /job_applications/:job_application_id/events when unauthenticated" do
+    before { delete session_path }
+
+    subject(:make_request) { post job_application_events_path(job_application), params: { event: { title: "Private", event_type: "call", scheduled_at: Time.current } } }
+
+    it_behaves_like "requires authentication"
   end
 end

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Registrations", type: :request do
   describe "GET /registrations/new" do
@@ -57,6 +57,14 @@ RSpec.describe "Registrations", type: :request do
       it "renders a successful response (i.e. to display the 'new' template)" do
         post registrations_path, params: invalid_attributes
         expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns bad request when required parameters are missing" do
+        expect {
+          post registrations_path, params: { email_address: "missing-wrapper@example.com" }
+        }.not_to change(User, :count)
+
+        expect(response).to have_http_status(:bad_request)
       end
     end
   end

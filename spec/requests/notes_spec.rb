@@ -71,5 +71,21 @@ RSpec.describe "Notes", type: :request do
 
       expect(response).to have_http_status(:not_found)
     end
+
+    it "returns bad request when required parameters are missing" do
+      expect {
+        post job_application_notes_path(job_application), params: { content: "Missing wrapper" }
+      }.not_to change(Note, :count)
+
+      expect(response).to have_http_status(:bad_request)
+    end
+  end
+
+  describe "POST /job_applications/:job_application_id/notes when unauthenticated" do
+    before { delete session_path }
+
+    subject(:make_request) { post job_application_notes_path(job_application), params: { note: { category: "General", content: "Private" } } }
+
+    it_behaves_like "requires authentication"
   end
 end

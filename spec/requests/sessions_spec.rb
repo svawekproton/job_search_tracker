@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Sessions", type: :request do
   let!(:user) { User.create!(email_address: "test@example.com", password: "password", password_confirmation: "password") }
@@ -24,6 +24,13 @@ RSpec.describe "Sessions", type: :request do
         post session_path, params: { email_address: user.email_address, password: "wrong" }
         expect(response).to redirect_to(new_session_path)
         expect(flash[:alert]).to be_present
+      end
+
+      it "returns bad request when required parameters are missing" do
+        post session_path, params: { email_address: user.email_address }
+
+        expect(response).to have_http_status(:bad_request)
+        expect(cookies[:session_id]).to be_blank
       end
     end
   end
