@@ -30,6 +30,8 @@ RSpec.describe "Job application flow", type: :system do
     fill_in "Password", with: "password"
     click_button "Sign in"
     expect(page).to have_current_path(root_path, ignore_query: true)
+    click_link email_address
+    expect(page).to have_button("Logout")
 
     visit job_application_path(job_application)
     select "Interviewing", from: "job_application_status"
