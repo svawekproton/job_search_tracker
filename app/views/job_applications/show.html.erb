@@ -16,7 +16,7 @@
           <%= form_with(model: @job_application, class: "status-switcher") do |f| %>
             <%= f.select :status, JobApplication.statuses.keys.map { |s| [s.humanize, s] }, {}, 
                 { class: "form-select shadow-sm border-0 bg-light fw-bold", 
-                  data: { status_updater_target: "select", action: "change->status-updater#update change->this.form#requestSubmit" } } %>
+                  data: { status_updater_target: "select", action: "change->status-updater#update change->status-updater#submit" } } %>
           <% end %>
         </div>
 
@@ -107,10 +107,10 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
               <h5 class="fw-bold mb-0">Activity Feed</h5>
               <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                <button type="button" class="btn btn-sm btn-primary" data-controller="modal" data-modal-selector-value="#addEventModal" data-action="click->modal#open">
                   <i class="bi bi-calendar-plus me-1"></i>Add Event
                 </button>
-                <button type="button" class="btn btn-sm btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+                <button type="button" class="btn btn-sm btn-primary ms-2" data-controller="modal" data-modal-selector-value="#addNoteModal" data-action="click->modal#open">
                   <i class="bi bi-sticky me-1"></i>Add Note
                 </button>
               </div>

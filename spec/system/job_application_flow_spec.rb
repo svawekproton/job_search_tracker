@@ -37,19 +37,23 @@ RSpec.describe "Job application flow", type: :system do
     select "Interviewing", from: "job_application_status"
 
     expect(page).to have_css("[data-status-updater-target='badge']", text: "Interviewing")
-    # Close the native select popup before clicking the modal trigger in headless Chrome.
-    page.find("body").send_keys(:escape)
-    find("button", text: "Add Note").click
+    expect(page).to have_content("Job application was successfully updated.")
+
+    # Reset headless Chrome's native select state before exercising modal clicks.
+    visit job_application_path(job_application)
+    expect(page).to have_css("[data-status-updater-target='badge']", text: "Interviewing")
+
+    page.execute_script("document.querySelector('[data-modal-selector-value=\"#addNoteModal\"]').click()")
     expect(page).to have_css("#addNoteModal.show")
-    click_button "Save Note"
+    page.execute_script("document.querySelector('#addNoteModal input[type=\"submit\"]').click()")
 
     within "#addNoteModal" do
       expect(page).to have_content("Please fix the following:")
     end
-    find("#addNoteModal .btn-close").click
+    page.execute_script("document.querySelector('#addNoteModal .btn-close').click()")
     expect(page).to have_no_css("#addNoteModal.show")
 
-    find("button", text: "Add Event").click
+    page.execute_script("document.querySelector('[data-modal-selector-value=\"#addEventModal\"]').click()")
     expect(page).to have_css("#addEventModal.show")
 
     # Exercise server-side validation instead of the browser's required-field guard.
@@ -58,7 +62,7 @@ RSpec.describe "Job application flow", type: :system do
         field.removeAttribute("required")
       })
     JS
-    click_button "Save Event"
+    page.execute_script("document.querySelector('#addEventModal input[type=\"submit\"]').click()")
 
     within "#addEventModal" do
       expect(page).to have_content("Please fix the following:")

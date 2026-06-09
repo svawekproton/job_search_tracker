@@ -27,4 +27,8 @@ export default class extends Controller {
       }
     }
   }
+
+  submit() {
+    this.selectTarget.form.requestSubmit()
+  }
 }
